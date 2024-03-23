@@ -1,0 +1,23 @@
+{
+  "ADIFColumns": [
+    "QSO_DATE#DATE",
+    "TIME_ON#Time6",
+    "CALL",
+    "FREQ#Freq",
+    "QTH",
+    "Number",
+    "CALL_FROM",
+    "CALL_TO",
+    "PROP_MODE",
+    "COMMENT",
+    "BAND",
+    "FREQ_TX#Freq",
+    "MODE"
+  ],
+  "ADIFDefaults": [
+    {
+      "Key": "MY_CALL",
+      "Value": "<CALL>"
+    }
+  ]
+}
