@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADIFDefaultFields.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ADIFDefaultFields.Designer.cs">
+      <DependentUpon>ADIFDefaultFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="CSV-to-ADIF-Converter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +60,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ADIFDefaultFields.resx">
+      <DependentUpon>ADIFDefaultFields.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CSV-to-ADIF-Converter.resx">
       <DependentUpon>CSV-to-ADIF-Converter.cs</DependentUpon>
     </EmbeddedResource>

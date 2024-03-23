@@ -45,18 +45,16 @@
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.tbCSVFile = new System.Windows.Forms.TextBox();
             this.btOpenCSV = new System.Windows.Forms.Button();
             this.tbCSVDelimiter = new System.Windows.Forms.TextBox();
-            this.tbCall = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tbColumn = new System.Windows.Forms.TextBox();
             this.btColAdd = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.btLoadADIFCols = new System.Windows.Forms.Button();
-            this.btSaveADIFCols = new System.Windows.Forms.Button();
+            this.btSaveADIFSettings = new System.Windows.Forms.Button();
             this.btLoadPreview = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvPreview = new System.Windows.Forms.DataGridView();
@@ -64,7 +62,7 @@
             this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.lbError = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btHeaders = new System.Windows.Forms.Button();
+            this.btDefaultValues = new System.Windows.Forms.Button();
             this.btCreateADIF = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -255,11 +253,9 @@
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel6.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.label4, 0, 1);
-            this.tableLayoutPanel6.Controls.Add(this.label5, 0, 2);
             this.tableLayoutPanel6.Controls.Add(this.tbCSVFile, 1, 0);
             this.tableLayoutPanel6.Controls.Add(this.btOpenCSV, 2, 0);
             this.tableLayoutPanel6.Controls.Add(this.tbCSVDelimiter, 1, 1);
-            this.tableLayoutPanel6.Controls.Add(this.tbCall, 1, 2);
             this.tableLayoutPanel6.Controls.Add(this.label6, 0, 3);
             this.tableLayoutPanel6.Controls.Add(this.tbColumn, 1, 3);
             this.tableLayoutPanel6.Controls.Add(this.btColAdd, 2, 3);
@@ -302,17 +298,6 @@
             this.label4.Text = "CSV Delimiter:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(3, 54);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(114, 27);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "My Call:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tbCSVFile
             // 
             this.tbCSVFile.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -341,14 +326,6 @@
             this.tbCSVDelimiter.TabIndex = 3;
             this.tbCSVDelimiter.Text = ";";
             this.tbCSVDelimiter.Leave += new System.EventHandler(this.tbCSVDelimiter_Leave);
-            // 
-            // tbCall
-            // 
-            this.tbCall.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tbCall.Location = new System.Drawing.Point(123, 57);
-            this.tbCall.Name = "tbCall";
-            this.tbCall.Size = new System.Drawing.Size(169, 20);
-            this.tbCall.TabIndex = 4;
             // 
             // label6
             // 
@@ -402,9 +379,9 @@
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel8.Controls.Add(this.btLoadADIFCols, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.btSaveADIFCols, 1, 0);
+            this.tableLayoutPanel8.Controls.Add(this.btSaveADIFSettings, 1, 0);
             this.tableLayoutPanel8.Controls.Add(this.btLoadPreview, 4, 0);
-            this.tableLayoutPanel8.Controls.Add(this.btHeaders, 2, 0);
+            this.tableLayoutPanel8.Controls.Add(this.btDefaultValues, 2, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 219);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
@@ -420,20 +397,20 @@
             this.btLoadADIFCols.Name = "btLoadADIFCols";
             this.btLoadADIFCols.Size = new System.Drawing.Size(163, 25);
             this.btLoadADIFCols.TabIndex = 0;
-            this.btLoadADIFCols.Text = "Load ADIF Columns";
+            this.btLoadADIFCols.Text = "Load ADIF Settings";
             this.btLoadADIFCols.UseVisualStyleBackColor = true;
             this.btLoadADIFCols.Click += new System.EventHandler(this.btLoadADIFCols_Click);
             // 
-            // btSaveADIFCols
+            // btSaveADIFSettings
             // 
-            this.btSaveADIFCols.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btSaveADIFCols.Location = new System.Drawing.Point(172, 3);
-            this.btSaveADIFCols.Name = "btSaveADIFCols";
-            this.btSaveADIFCols.Size = new System.Drawing.Size(163, 25);
-            this.btSaveADIFCols.TabIndex = 0;
-            this.btSaveADIFCols.Text = "Save ADIF Columns";
-            this.btSaveADIFCols.UseVisualStyleBackColor = true;
-            this.btSaveADIFCols.Click += new System.EventHandler(this.btSaveADIFCols_Click);
+            this.btSaveADIFSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btSaveADIFSettings.Location = new System.Drawing.Point(172, 3);
+            this.btSaveADIFSettings.Name = "btSaveADIFSettings";
+            this.btSaveADIFSettings.Size = new System.Drawing.Size(163, 25);
+            this.btSaveADIFSettings.TabIndex = 0;
+            this.btSaveADIFSettings.Text = "Save ADIF Settings";
+            this.btSaveADIFSettings.UseVisualStyleBackColor = true;
+            this.btSaveADIFSettings.Click += new System.EventHandler(this.btSaveADIFCols_Click);
             // 
             // btLoadPreview
             // 
@@ -505,15 +482,16 @@
             this.lbError.Name = "lbError";
             this.lbError.Size = new System.Drawing.Size(0, 17);
             // 
-            // btHeaders
+            // btDefaultValues
             // 
-            this.btHeaders.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btHeaders.Location = new System.Drawing.Point(341, 3);
-            this.btHeaders.Name = "btHeaders";
-            this.btHeaders.Size = new System.Drawing.Size(163, 25);
-            this.btHeaders.TabIndex = 9;
-            this.btHeaders.Text = "ADIF Headers";
-            this.btHeaders.UseVisualStyleBackColor = true;
+            this.btDefaultValues.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btDefaultValues.Location = new System.Drawing.Point(341, 3);
+            this.btDefaultValues.Name = "btDefaultValues";
+            this.btDefaultValues.Size = new System.Drawing.Size(163, 25);
+            this.btDefaultValues.TabIndex = 9;
+            this.btDefaultValues.Text = "ADIF Default Values";
+            this.btDefaultValues.UseVisualStyleBackColor = true;
+            this.btDefaultValues.Click += new System.EventHandler(this.btDefaultValues_Click);
             // 
             // btCreateADIF
             // 
@@ -572,11 +550,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbCSVFile;
         private System.Windows.Forms.Button btOpenCSV;
         private System.Windows.Forms.TextBox tbCSVDelimiter;
-        private System.Windows.Forms.TextBox tbCall;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox tbColumn;
         private System.Windows.Forms.Button btColAdd;
@@ -585,13 +561,13 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
         private System.Windows.Forms.Button btLoadADIFCols;
-        private System.Windows.Forms.Button btSaveADIFCols;
+        private System.Windows.Forms.Button btSaveADIFSettings;
         private System.Windows.Forms.Button btLoadPreview;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel lbStatus;
         private System.Windows.Forms.ToolStripStatusLabel lbError;
-        private System.Windows.Forms.Button btHeaders;
+        private System.Windows.Forms.Button btDefaultValues;
         private System.Windows.Forms.Button btCreateADIF;
     }
 }

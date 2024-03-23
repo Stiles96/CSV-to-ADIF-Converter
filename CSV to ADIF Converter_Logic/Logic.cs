@@ -63,12 +63,13 @@ namespace CSV_to_ADIF_Converter_Logic
                         data = Convert.ToDateTime(data).ToString("yyyyMMdd");
                         return data;
                     case "freq":
-                        data = data.Replace(".", ",");
-                        if (data.IndexOf(",") > -1)
+                        data = data.Replace(",", ".");
+                        if (data.IndexOf(".") > -1)
                         {
-                            return (Convert.ToDouble(data) * 1000000).ToString();
+                            return data;
                         }
-                        return data;
+                        else
+                            return (Convert.ToDouble(data) / 1000000).ToString();
                     default:
                         return data;
                 }
@@ -84,13 +85,14 @@ namespace CSV_to_ADIF_Converter_Logic
         /// </summary>
         /// <param name="mapping">1. Columns in Store, 2. CSV Columns</param>
         /// <param name="progress">Progess for progessbar</param>
-        public Log ImportCSV(string[,] mapping, IProgress<int> progress)
+        public Log ImportCSV(string[,] mapping, IProgress<int> progress, List<KeyValuePair<string, string>> ADIFdefaultFieldsValues)
         {
             try
             {
                 Dictionary<string, int> Columnsmapping = GetColumnsMapping(mapping); //ADIF Column Name - Column CSV ID
 
                 Log log = new Log();
+                log.DefaultFields = ADIFdefaultFieldsValues;
                 log.QSOs = new List<QSO>();
                 log.TableHeaders = new List<string>();
 
@@ -130,7 +132,7 @@ namespace CSV_to_ADIF_Converter_Logic
                     log.QSOs.Add(qso);
                     i++;
                     if (progress != null)
-                        progress.Report(i * 100 / CSV.Content.ToArray().Length);
+                        progress.Report(i * 100 / CSV.Content.Count);
                 }
                 return log;
             }
@@ -140,9 +142,38 @@ namespace CSV_to_ADIF_Converter_Logic
             }
         }
 
-        public void SaveAdDIFFile(Log log, IProgress<int> progress)
+        public void SaveADIFFile(Log log, IProgress<int> progress, string Path)
         {
+            int i = 0;
+            List<string> lines = new List<string>();
+            lines.Add("CSV to ADIF Converter");
+            lines.Add(AddParameter("PROGRAMID", "CSV-ADIF-Converter"));
+            lines.Add("<EOH>");
+            lines.Add("");
 
+            foreach (QSO qso in log.QSOs)
+            {
+                foreach (KeyValuePair<string, string> field in qso.Fields)
+                    lines.Add(AddParameter(field.Key, field.Value));
+
+                if (log.DefaultFields != null)
+                    foreach (KeyValuePair<string, string> field in log.DefaultFields)
+                        lines.Add(AddParameter(field.Key, field.Value));
+                lines.Add("<EOR>");
+                lines.Add("");
+
+                i++;
+                if (progress != null)
+                    progress.Report(i * 100 / log.QSOs.Count);
+            }
+
+            FileAccess.WriteCSVFile(Path, lines);
+        }
+
+        string AddParameter(string key, string value)
+        {
+            value = value.Trim();
+            return "<" + key + ":" + value.Length + ">" + value;
         }
     }
 }

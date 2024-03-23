@@ -172,5 +172,15 @@ namespace CSV_to_ADIF_Converter_Logic
                 writer.WriteLine(line);
             writer.Close();
         }
+
+        public static void WriteJSONFile(string Path, string json)
+        {
+            File.WriteAllText(Path, json);
+        }
+
+        public static string ReadJSONFile(string Path)
+        {
+            return File.ReadAllText(Path);
+        }
     }
 }

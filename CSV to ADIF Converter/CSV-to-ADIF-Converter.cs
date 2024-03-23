@@ -16,6 +16,7 @@ namespace CSV_to_ADIF_Converter
     public partial class CSVADIFConverterGUI : Form
     {
         Logic crtl;
+        List<KeyValuePair<string, string>> ADIFdefaultFieldsValues;
         public CSVADIFConverterGUI()
         {
             InitializeComponent();
@@ -143,21 +144,23 @@ namespace CSV_to_ADIF_Converter
 
         private void btLoadPreview_Click(object sender, EventArgs e)
         {
-            LoadPreview();
+            LoadPreview(ADIFdefaultFieldsValues);
         }
 
-        async void LoadPreview()
+        async void LoadPreview(List<KeyValuePair<string, string>> ADIFdefaultFieldsValues)
         {
             var progress = new Progress<int>(v => { toolStripProgressBar1.Value = v; });
             lbStatus.Text = "Loading ...";
-            LoadPreviewLog(await Task.Run(() => crtl.ImportCSV(GetMappings(), progress)));
+            LoadPreviewLog(await Task.Run(() => crtl.ImportCSV(GetMappings(), progress, ADIFdefaultFieldsValues)));
             lbStatus.Text = "Loaded";
         }
 
-        void LoadDGVColumns(List<string> cols)
+        void LoadDGVColumns(List<string> cols, List<string> defaultcols)
         {
             dgvPreview.Columns.Clear();
             foreach (string Column in cols)
+                dgvPreview.Columns.Add(Column.Replace(" ", ""), Column);
+            foreach (string Column in defaultcols)
                 dgvPreview.Columns.Add(Column.Replace(" ", ""), Column);
         }
 
@@ -173,7 +176,7 @@ namespace CSV_to_ADIF_Converter
                 {
                     int Errorcounter = 0;
 
-                    LoadDGVColumns(log.TableHeaders);
+                    LoadDGVColumns(log.TableHeaders, log.GetDefaultTableHeaders());
 
                     foreach (QSO qso in log.QSOs)
                     {
@@ -183,6 +186,9 @@ namespace CSV_to_ADIF_Converter
                             DataGridViewRow row = dgvPreview.Rows[rowindex];
                             foreach (KeyValuePair<string, string> field in qso.Fields)
                                 row.Cells[field.Key.Replace(" ", "")].Value = field.Value;
+                            if (log.DefaultFields != null)
+                                foreach (KeyValuePair<string, string> defaultfield in log.DefaultFields)
+                                    row.Cells[defaultfield.Key.Replace(" ", "")].Value = defaultfield.Value;
                         }
                         catch
                         {
@@ -202,30 +208,35 @@ namespace CSV_to_ADIF_Converter
         private void btSaveADIFCols_Click(object sender, EventArgs e)
         {
             List<string> lines = new List<string>();
-            lines.Add("ADIF Cols");
 
             for (int i = 0; i < lbCol.Items.Count; i++)
             {
                 lines.Add(lbCol.Items[i].ToString());
             }
 
+            ADIFSettings adifSettings = new ADIFSettings();
+            adifSettings.ADIFColumns = lines;
+            adifSettings.ADIFDefaults = ADIFdefaultFieldsValues;
+
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "CSV Files|*.csv|All Files|*.*";
+            saveFileDialog.Filter = "JSON Files|*.json|All Files|*.*";
             saveFileDialog.ShowDialog();
 
-            FileAccess.WriteCSVFile(saveFileDialog.FileName, lines);
+            FileAccess.WriteJSONFile(saveFileDialog.FileName, Helper.GetJson(adifSettings));
         }
 
         private void btLoadADIFCols_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "CSV Files|*.csv|All Files|*.*";
+            openFileDialog.Filter = "JSON Files|*.json|All Files|*.*";
             openFileDialog.ShowDialog();
-            CSVFile file = FileAccess.ReadCSVFile(openFileDialog.FileName);
+            ADIFSettings adifSettings = Helper.GetObject<ADIFSettings>(FileAccess.ReadJSONFile(openFileDialog.FileName));
+
+            ADIFdefaultFieldsValues = adifSettings.ADIFDefaults;
 
             lbCol.Items.Clear();
-            foreach (string[] col in file.Content)
-                lbCol.Items.Add(col[0]);
+            foreach (string col in adifSettings.ADIFColumns)
+                lbCol.Items.Add(col);
         }
 
         private void btCreateADIF_Click(object sender, EventArgs e)
@@ -234,15 +245,23 @@ namespace CSV_to_ADIF_Converter
             saveFileDialog.Filter = "ADIF Files|*.adi|All Files|*.*";
             saveFileDialog.ShowDialog();
 
-            SaveLog(saveFileDialog.FileName);
+            SaveLog(saveFileDialog.FileName, ADIFdefaultFieldsValues);
         }
 
-        async void SaveLog(string Path)
+        async void SaveLog(string Path, List<KeyValuePair<string, string>> ADIFdefaultFieldsValues)
         {
             var progress = new Progress<int>(v => { toolStripProgressBar1.Value = v; });
             lbStatus.Text = "Saving ...";
-            crtl.SaveAdDIFFile(await Task.Run(() => crtl.ImportCSV(GetMappings(), progress)), progress);
+            crtl.SaveADIFFile(await Task.Run(() => crtl.ImportCSV(GetMappings(), progress, ADIFdefaultFieldsValues)), progress, Path);
             lbStatus.Text = "Saved";
+        }
+
+        private void btDefaultValues_Click(object sender, EventArgs e)
+        {
+            ADIFDefaultFields gui = new ADIFDefaultFields(ADIFdefaultFieldsValues);
+            gui.ShowDialog();
+            ADIFdefaultFieldsValues = gui.GetADIFDefaultFields();
+            gui.Close();
         }
     }
 }
