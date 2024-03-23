@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSV_to_ADIF_Converter_Logic.Models
+namespace CSV_to_ADIF_Converter_Logic
 {
     public class CSVFile
     {

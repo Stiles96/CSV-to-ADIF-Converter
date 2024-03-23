@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
-using CSV_to_ADIF_Converter_Logic.Models;
 
 namespace CSV_to_ADIF_Converter_Logic
 {

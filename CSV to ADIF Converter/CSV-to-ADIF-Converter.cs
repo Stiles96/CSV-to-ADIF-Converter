@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Common;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,7 +16,6 @@ namespace CSV_to_ADIF_Converter
     public partial class CSVADIFConverterGUI : Form
     {
         Logic crtl;
-        List<string> columns = new List<string>();
         public CSVADIFConverterGUI()
         {
             InitializeComponent();
@@ -58,7 +58,6 @@ namespace CSV_to_ADIF_Converter
         {
             if (tbColumn.Text != "")
             {
-                columns.Add(tbColumn.Text);
                 lbCol.Items.Add(tbColumn.Text);
                 tbColumn.Text = "";
                 tbColumn.Focus();
@@ -71,7 +70,6 @@ namespace CSV_to_ADIF_Converter
             if (selected != null)
             {
                 lbCol.Items.Remove(selected);
-                columns.Remove(selected);
             }
         }
 
@@ -141,6 +139,110 @@ namespace CSV_to_ADIF_Converter
         private void btCSVColDown_Click(object sender, EventArgs e)
         {
             sort(lbCSVCol, false);
+        }
+
+        private void btLoadPreview_Click(object sender, EventArgs e)
+        {
+            LoadPreview();
+        }
+
+        async void LoadPreview()
+        {
+            var progress = new Progress<int>(v => { toolStripProgressBar1.Value = v; });
+            lbStatus.Text = "Loading ...";
+            LoadPreviewLog(await Task.Run(() => crtl.ImportCSV(GetMappings(), progress)));
+            lbStatus.Text = "Loaded";
+        }
+
+        void LoadDGVColumns(List<string> cols)
+        {
+            dgvPreview.Columns.Clear();
+            foreach (string Column in cols)
+                dgvPreview.Columns.Add(Column.Replace(" ", ""), Column);
+        }
+
+        /// <summary>
+        /// Load Preview in DGV
+        /// </summary>
+        /// <param name="log">Log to show</param>
+        void LoadPreviewLog(Log log)
+        {
+            dgvPreview.Rows.Clear();
+            if (log != null)
+                try
+                {
+                    int Errorcounter = 0;
+
+                    LoadDGVColumns(log.TableHeaders);
+
+                    foreach (QSO qso in log.QSOs)
+                    {
+                        try
+                        {
+                            int rowindex = dgvPreview.Rows.Add();
+                            DataGridViewRow row = dgvPreview.Rows[rowindex];
+                            foreach (KeyValuePair<string, string> field in qso.Fields)
+                                row.Cells[field.Key.Replace(" ", "")].Value = field.Value;
+                        }
+                        catch
+                        {
+                            Errorcounter++;
+                        }
+                    }
+                    lbError.Text = "Errors: " + Errorcounter.ToString();
+                }
+                catch
+                {
+                    lbError.Text = "Error by loading";
+                }
+            else
+                lbError.Text = "No data";
+        }
+
+        private void btSaveADIFCols_Click(object sender, EventArgs e)
+        {
+            List<string> lines = new List<string>();
+            lines.Add("ADIF Cols");
+
+            for (int i = 0; i < lbCol.Items.Count; i++)
+            {
+                lines.Add(lbCol.Items[i].ToString());
+            }
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "CSV Files|*.csv|All Files|*.*";
+            saveFileDialog.ShowDialog();
+
+            FileAccess.WriteCSVFile(saveFileDialog.FileName, lines);
+        }
+
+        private void btLoadADIFCols_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "CSV Files|*.csv|All Files|*.*";
+            openFileDialog.ShowDialog();
+            CSVFile file = FileAccess.ReadCSVFile(openFileDialog.FileName);
+
+            lbCol.Items.Clear();
+            foreach (string[] col in file.Content)
+                lbCol.Items.Add(col[0]);
+        }
+
+        private void btCreateADIF_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "ADIF Files|*.adi|All Files|*.*";
+            saveFileDialog.ShowDialog();
+
+            SaveLog(saveFileDialog.FileName);
+        }
+
+        async void SaveLog(string Path)
+        {
+            var progress = new Progress<int>(v => { toolStripProgressBar1.Value = v; });
+            lbStatus.Text = "Saving ...";
+            crtl.SaveAdDIFFile(await Task.Run(() => crtl.ImportCSV(GetMappings(), progress)), progress);
+            lbStatus.Text = "Saved";
         }
     }
 }

@@ -44,6 +44,7 @@
     <Compile Include="Database\FileAccess.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="Models\CSVFile.cs" />
+    <Compile Include="Models\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
