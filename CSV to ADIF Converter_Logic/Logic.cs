@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSV_to_ADIF_Converter_Logic.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -70,6 +71,9 @@ namespace CSV_to_ADIF_Converter_Logic
                         }
                         else
                             return (Convert.ToDouble(data) / 1000000).ToString();
+                    case "kfreq":
+                        data = data.Replace(",", ".");
+                        return (Convert.ToDouble(data) / 1000).ToString();
                     default:
                         return data;
                 }
@@ -174,6 +178,25 @@ namespace CSV_to_ADIF_Converter_Logic
         {
             value = value.Trim();
             return "<" + key + ":" + value.Length + ">" + value;
+        }
+        /// <summary>
+        /// Get Program Settings from last closing
+        /// </summary>
+        /// <returns></returns>
+        public LastProgramSettings GetLastProgramSettings()
+        {
+            LastProgramSettings lastProgramSettings = new LastProgramSettings();
+            lastProgramSettings.CSVDelimiter = settings.Default.CSVDelimiter;
+            return lastProgramSettings;
+        }
+
+        public void SaveLastProgramSettings(LastProgramSettings lastProgramSettings)
+        {
+            if (lastProgramSettings != null)
+            {
+                settings.Default.CSVDelimiter = lastProgramSettings.CSVDelimiter;
+                settings.Default.Save();
+            }
         }
     }
 }

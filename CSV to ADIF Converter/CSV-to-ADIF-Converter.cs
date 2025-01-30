@@ -1,4 +1,5 @@
 ﻿using CSV_to_ADIF_Converter_Logic;
+using CSV_to_ADIF_Converter_Logic.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +22,8 @@ namespace CSV_to_ADIF_Converter
         {
             InitializeComponent();
             crtl = new Logic();
+            LastProgramSettings lastProgramSettings = crtl.GetLastProgramSettings();
+            tbCSVDelimiter.Text = lastProgramSettings.CSVDelimiter.ToString();
         }
 
         private void btOpenCSV_Click(object sender, EventArgs e)
@@ -262,6 +265,14 @@ namespace CSV_to_ADIF_Converter
             gui.ShowDialog();
             ADIFdefaultFieldsValues = gui.GetADIFDefaultFields();
             gui.Close();
+        }
+
+        private void CSVADIFConverterGUI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            crtl.SaveLastProgramSettings(new LastProgramSettings()
+            {
+                CSVDelimiter = tbCSVDelimiter.Text == "" ? ' ' : tbCSVDelimiter.Text[0]
+            });
         }
     }
 }

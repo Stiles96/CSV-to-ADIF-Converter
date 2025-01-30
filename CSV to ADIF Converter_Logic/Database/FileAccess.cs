@@ -167,10 +167,13 @@ namespace CSV_to_ADIF_Converter_Logic
         /// <param name="lines">Lines to write</param>
         public static void WriteCSVFile(string Path, List<string> lines)
         {
-            StreamWriter writer = new StreamWriter(Path);
-            foreach (string line in lines)
-                writer.WriteLine(line);
-            writer.Close();
+            if (Path != "")
+            {
+                StreamWriter writer = new StreamWriter(Path);
+                foreach (string line in lines)
+                    writer.WriteLine(line);
+                writer.Close();
+            }
         }
 
         public static void WriteJSONFile(string Path, string json)
@@ -180,7 +183,10 @@ namespace CSV_to_ADIF_Converter_Logic
 
         public static string ReadJSONFile(string Path)
         {
-            return File.ReadAllText(Path);
+            if (Path != null && Path != "")
+                return File.ReadAllText(Path);
+            else
+                return null;
         }
     }
 }

@@ -56,14 +56,15 @@
             this.btLoadADIFCols = new System.Windows.Forms.Button();
             this.btSaveADIFSettings = new System.Windows.Forms.Button();
             this.btLoadPreview = new System.Windows.Forms.Button();
+            this.btDefaultValues = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvPreview = new System.Windows.Forms.DataGridView();
+            this.btCreateADIF = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.lbError = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btDefaultValues = new System.Windows.Forms.Button();
-            this.btCreateADIF = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -251,6 +252,7 @@
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel6.Controls.Add(this.label5, 1, 5);
             this.tableLayoutPanel6.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.label4, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.tbCSVFile, 1, 0);
@@ -367,7 +369,7 @@
             this.label7.Size = new System.Drawing.Size(642, 27);
             this.label7.TabIndex = 8;
             this.label7.Text = "Formats: #Time4: Time 4 chars HHmm - #Time6: Time 6 chars HHmmss - #Date: Date Fo" +
-    "rmat yyyyMMdd - #Freq: Frequenz in Hz";
+    "rmat yyyyMMdd";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel8
@@ -423,6 +425,17 @@
             this.btLoadPreview.UseVisualStyleBackColor = true;
             this.btLoadPreview.Click += new System.EventHandler(this.btLoadPreview_Click);
             // 
+            // btDefaultValues
+            // 
+            this.btDefaultValues.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btDefaultValues.Location = new System.Drawing.Point(341, 3);
+            this.btDefaultValues.Name = "btDefaultValues";
+            this.btDefaultValues.Size = new System.Drawing.Size(163, 25);
+            this.btDefaultValues.TabIndex = 9;
+            this.btDefaultValues.Text = "ADIF Default Values";
+            this.btDefaultValues.UseVisualStyleBackColor = true;
+            this.btDefaultValues.Click += new System.EventHandler(this.btDefaultValues_Click);
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
@@ -454,6 +467,17 @@
             this.dgvPreview.Size = new System.Drawing.Size(1434, 259);
             this.dgvPreview.TabIndex = 1;
             // 
+            // btCreateADIF
+            // 
+            this.btCreateADIF.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btCreateADIF.Location = new System.Drawing.Point(1226, 533);
+            this.btCreateADIF.Name = "btCreateADIF";
+            this.btCreateADIF.Size = new System.Drawing.Size(211, 29);
+            this.btCreateADIF.TabIndex = 2;
+            this.btCreateADIF.Text = "Create ADIF";
+            this.btCreateADIF.UseVisualStyleBackColor = true;
+            this.btCreateADIF.Click += new System.EventHandler(this.btCreateADIF_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -482,27 +506,16 @@
             this.lbError.Name = "lbError";
             this.lbError.Size = new System.Drawing.Size(0, 17);
             // 
-            // btDefaultValues
+            // label5
             // 
-            this.btDefaultValues.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btDefaultValues.Location = new System.Drawing.Point(341, 3);
-            this.btDefaultValues.Name = "btDefaultValues";
-            this.btDefaultValues.Size = new System.Drawing.Size(163, 25);
-            this.btDefaultValues.TabIndex = 9;
-            this.btDefaultValues.Text = "ADIF Default Values";
-            this.btDefaultValues.UseVisualStyleBackColor = true;
-            this.btDefaultValues.Click += new System.EventHandler(this.btDefaultValues_Click);
-            // 
-            // btCreateADIF
-            // 
-            this.btCreateADIF.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btCreateADIF.Location = new System.Drawing.Point(1226, 533);
-            this.btCreateADIF.Name = "btCreateADIF";
-            this.btCreateADIF.Size = new System.Drawing.Size(211, 29);
-            this.btCreateADIF.TabIndex = 2;
-            this.btCreateADIF.Text = "Create ADIF";
-            this.btCreateADIF.UseVisualStyleBackColor = true;
-            this.btCreateADIF.Click += new System.EventHandler(this.btCreateADIF_Click);
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Location = new System.Drawing.Point(123, 135);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(642, 27);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "#Freq: Frequenz in Hz or MHz - #kfreq: Frequenz in kHz";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // CSVADIFConverterGUI
             // 
@@ -514,6 +527,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CSVADIFConverterGUI";
             this.Text = "CSV to ADIF Converter";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CSVADIFConverterGUI_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
@@ -569,6 +583,7 @@
         private System.Windows.Forms.ToolStripStatusLabel lbError;
         private System.Windows.Forms.Button btDefaultValues;
         private System.Windows.Forms.Button btCreateADIF;
+        private System.Windows.Forms.Label label5;
     }
 }
 
